@@ -6,12 +6,18 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{svg}
+\usepackage{currfile}
+\usepackage{minibox}
 
 \usepackage[breaklinks=true,bookmarks=false]{hyperref}
 
-\def\cvprPaperId{0}
+\cvprfinalcopy
+
+\def\cvprPaperId{****}
 \def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
 
+\setcounter{page}{1}
 \begin{document}
 
 \iffalse
@@ -38,7 +44,7 @@ Exploiting synthetic images for real-world image recognition
 \fi
 \author{Max Maton\\
 Delft University of Technology\\
-Delft, The Netherlands
+Delft, The Netherlands\\
 {\tt\small info@maxmaton.nl}
 }
 
@@ -48,8 +54,15 @@ Delft, The Netherlands
 Abstract
 </h2>
 <p>
+\fi
+
+\begin{abstract}
+
 This paper shows that the gap between synthetic and real image distributions can be closed by using GANs to convert the synthetic data to a dataset which has the same distribution as the real data. Training this GAN requires only a small fraction of the dataset needed to get high classification accuracy. This data can subsequently be used to train a classifier with a higher accuracy than a classifier trained only on the real dataset.
 
+\end{abstract}
+
+\iffalse
 <h2>
 Introduction
 </h2>
@@ -59,32 +72,59 @@ Figure 1. <i>Technique used to convert synthetic dataset for use in training.</i
 </div>
 
 <p>
+\fi
+
+\section{Introduction}
+
+
+\begin{figure}[b]
+\begin{center}
+\fbox{\rule{0pt}{2in} \rule{0.1\linewidth}{0pt}%
+   {\scriptsize \includesvg[width=0.8\linewidth]{../method.svg}}%
+}
+\end{center}
+   \caption{Technique used to convert synthetic dataset for use in training.}
+\label{fig:long}
+\label{fig:onecol}
+\end{figure}
+
 Deep learning has revolutionized visual object recognition. Thanks to huge datasets and fast hardware (GPUs) current object recognition approaches have near-human accuracy.
-<p>
-Because creating big datasets is often very expensive, people are starting to turn to synthetic images to augment their datasets. However, learning from synthetic images may not achieve the desired performance due to a <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.151.7688">gap between synthetic and real image distributions</a>.
-<p>
-Another development is the increased focus on Generative Adversarial Networks (GANs) for use in generation of images that <a href="https://arxiv.org/pdf/1406.2661.pdf">look similar to the images they are trained on</a>.
-<p>
+%<p>
+Because creating big datasets is often very expensive, people are starting to turn to synthetic images to augment their datasets. However, learning from synthetic images may not achieve the desired performance due to a gap between synthetic and real image distributions. \cite{10.1.1.151.7688}
+%<p>
+Another development is the increased focus on Generative Adversarial Networks (GANs) for use in generation of images that look similar to the images they are trained on. \cite{1406.2661}
+%<p>
 In this paper we decrease the impact of the distribution gap between synthetic and real image distributions by using a GAN to modify the synthetic images to have the same distribution as real images. We show that this technique can be used to inflate very small datasets to a level where they can be used to create accurate classifiers.
 
+\iffalse
 <h2>
 Related work
 </h2>
 <p>
-Artificial data can in some cases be used to train networks. Examples of this are a network trained on <a href="https://pdfs.semanticscholar.org/a421/67bb208711bc2c4e37969e4bc58df0828ad0.pdf">rendered images to segment images of indoor scenes</a>, a network that <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.151.7688">recognises font characters trained on interpolated real samples</a> and a <a href="https://arxiv.org/pdf/1511.07041.pdf">network trained with simulations to train control networks</a>. The approach used when training these networks is to create a synthetic dataset that is as close as possible in statistical distribution as the real dataset. Generally this is very hard or expensive to achieve.
+\fi
 
-<p>
-A solution for the problem of creating synthetic datasets with a distribution close to a real dataset is domain adaptation. This is generally done using Generative Adversarial Networks [<a href="https://arxiv.org/pdf/1703.05192.pdf">1</a>, <a href="http://openaccess.thecvf.com/content_cvpr_2017/papers/Bousmalis_Unsupervised_Pixel-Level_Domain_CVPR_2017_paper.pdf">2</a>, <a href="https://link-springer-com.tudelft.idm.oclc.org/book/10.1007%2F978-3-319-58347-1">3</a>] that are trained to create samples that are indistinguisable from images in the real dataset based on images in the crude synthetic dataset. We decided to perform this research on the <a href="http://openaccess.thecvf.com/content_cvpr_2017/papers/Bousmalis_Unsupervised_Pixel-Level_Domain_CVPR_2017_paper.pdf">GAN as described by Bousmalis et al</a> due to the available <a href="https://www.tensorflow.org/">TensorFlow</a> implementation.
+\section{Related work}
 
+Artificial data can in some cases be used to train networks. Examples of this are a network trained on rendered images to segment images of indoor scenes \cite{10.1.1.94.777}, a network that recognises font characters trained on interpolated real samples \cite{10.1.1.151.7688} and a network trained with simulations to train control networks. \cite{10.1109/CVPR.2016.442} The approach used when training these networks is to create a synthetic dataset that is as close as possible in statistical distribution as the real dataset. Generally this is very hard or expensive to achieve.
+
+%<p>
+A solution for the problem of creating synthetic datasets with a distribution close to a real dataset is domain adaptation. This is generally done using Generative Adversarial Networks \cite{1703.05192.pdf, 10.1109/CVPR.2017.18, 10.1007/978-3-319-58347-1} that are trained to create samples that are indistinguisable from images in the real dataset based on images in the crude synthetic dataset. We decided to perform this research on the GAN as described by Bousmalis et al \cite{10.1109/CVPR.2017.18} due to the available TensorFlow \cite{tensorflow} implementation.
+
+\iffalse
 <h2>
 Inflating datasets using synthetic data and GANs
 </h2>
 <p>
+\fi
+
+\section{Inflating datasets using synthetic data and GANs}
+
 The basis of this research is the GAN that converts images from the synthetic dataset distribution to an image that appears to come from the distribution of the real dataset. This GAN consists of a generator network that does the image conversion, a discriminator that tries to distinguish between the output of the generator and images from the real dataset and a classifier that predicts the label of an image from the real dataset, the generator or the synthetic dataset. All these networks are trained in parallel. The discriminator and classifier are trained to reduce the amount of misclassifications. The generator is trained to minimize the amount of pixels changed in the image, to minimize the loss in classification by the classifier and to try to fool the discriminator to classify the image as real.
 
-<p>
+%<p>
 To test the effects of inflating datasets with this technique we first trained the GAN with a real and synthetic dataset. We then use it to create a new dataset and combine it with the real dataset. This newly created dataset is then used to train a second classifier.
 
+\iffalse
 <h3 id="approach">
 Experiments
 </h3>
@@ -223,24 +263,45 @@ Experiments
 Figure 2. <i>Example images of the MNIST<sub>font</sub> dataset.</i>
 </div>
 <p>
-We evaluated this technique on the <a href="http://yann.lecun.com/exdb/mnist/">MNIST dataset</a> together with a synthetic dataset generated by rendering open source font digits in multiple rotations for all number classes.
-<p>
-The synthetic dataset contains samples from 149 <a href="fontlist.txt">fonts</a>, with each digit rendered with 47 variations with rotations between -47 and 46 degrees. All images were normalized using the same algorithm used to normalize the MNIST samples. A random sample of 10.030 of those images were put in a test set and the remaining 60.000 images were used as the synthetic dataset.
-<p>
-The GAN was modified to use 10% of the training data as a validation set instead of a constant 1.000 samples as this allowed us to use smaller sample sizes.
+\fi
 
-<p>
-For multiple ratios r where 0 &lt; r &lt; 1 we created the following datasets:
+\subsection{Experiments}
+
+\begin{figure}
+\begin{center}
+\fbox{\rule{0pt}{2in} %\rule{.7\linewidth}{0pt} 
+\includegraphics[width=0.8\linewidth]{example-font-images.png}%
+}
+\end{center}
+   \caption{Example images of the MNIST font dataset}
+\label{fig:long}
+\label{fig:onecol}
+\end{figure}
+
+We evaluated this technique on the MNIST dataset \cite{mnist} together with a synthetic dataset generated by rendering open source font digits in multiple rotations for all number classes.
+%<p>
+The synthetic dataset contains samples from $149$ fonts, with each digit rendered with $47$ variations with rotations between $-47$ and $46$ degrees. All images were normalized using the same algorithm used to normalize the MNIST samples. A random sample of $10.030$ of those images were put in a test set and the remaining $60.000$ images were used as the synthetic dataset.
+%<p>
+The GAN was modified to use $10\%$ of the training data as a validation set instead of a constant $1.000$ samples as this allowed us to use smaller sample sizes.
+
+%<p>
+For multiple ratios r where $0 > r > 1$ we created the following datasets:
+
+fixme
+\iffalse
 <dl>
 <dt>MNIST<sub>original</sub></dt><dd><code>60.000 * r</code> images from the original MNIST dataset.</dd>
 <dt>MNIST<sub>font</sub></dt><dd><code>60.000 * (1 - r)</code> images from the synthetic font dataset.</dd>
 </dl>
+\fi
 
-<p>
-We used these two datasets to train the GAN using 12.000.000 training samples and subsequently ran the GAN on the MNIST<sub>font</sub> dataset to create the MNIST<sub>GAN</sub> dataset. This made the MNIST<sub>GAN</sub> dataset exactly as big as MNIST<sub>font</sub>.
+%<p>
+We used these two datasets to train the GAN using 12.000.000 training samples and subsequently ran the GAN on the $\mathit{MNIST}_\mathit{font}$ dataset to create the $\mathit{MNIST}_\mathit{GAN}$ dataset. This made the $\mathit{MNIST}_\mathit{GAN}$ dataset exactly as big as $\mathit{MNIST}_\mathit{font}$.
 
-<p>
+%<p>
 With these datasets we trained five instances of the following classifiers:
+
+\iffalse
 <dl>
 <dt>5 × C-MNIST<sub>original</sub></dt><dd>Classifier only trained on MNIST<sub>original</sub>.</dd>
 <dt>5 × C-MNIST<sub>font</sub></dt><dd>Classifier only trained on MNIST<sub>font</sub>.</dd>
@@ -248,10 +309,12 @@ With these datasets we trained five instances of the following classifiers:
 <dt>5 × C-MNIST<sub>original+gan</sub></dt><dd>Classifier trained on MNIST<sub>original</sub> and MNIST<sub>GAN</sub>.</dd>
 <dt>5 × C-MNIST<sub>original+font</sub></dt><dd>Classifier trained on MNIST<sub>original</sub> and MNIST<sub>font</sub>.</dd>
 </dl>
+\fi
 
-<p>
+%<p>
 Each classifier was tested on the MNIST test set which resulted in an accuracy percentage.
 
+\iffalse
 <h2 id="results">
 Results
 </h2>
@@ -362,15 +425,38 @@ Results
 </div>
 Figure 3. <i>Outputs from multiple runs of the GAN with different amounts of original training data. The network seems to be unable to keep the label consistent when there is not enough data.</i>
 </div>
+\fi
 
-<p>
+\begin{figure}
+\begin{center}
+%\fbox{\rule{0pt}{2in} %\rule{.7\linewidth}{0pt} %
+\minibox[frame]{
+	\parbox{0.8\linewidth}{ \small $r = 0.001$ } \\
+	\parbox{0.8\linewidth}{ \includegraphics[width=0.8\linewidth]{results-001.png} } \\
+	\parbox{0.8\linewidth}{ \small $r = 0.007$ } \\
+	\parbox{0.8\linewidth}{ \includegraphics[width=0.8\linewidth]{results-007.png} } \\
+	\parbox{0.8\linewidth}{ \small $r = 0.100$ } \\
+	\parbox{0.8\linewidth}{ \includegraphics[width=0.8\linewidth]{results-100.png} } \\
+	\parbox{0.8\linewidth}{ \small $r = 0.700$ } \\
+	\parbox{0.8\linewidth}{ \includegraphics[width=0.8\linewidth]{results-700.png} } \\
+}
+\end{center}
+   \caption{Example images of the MNIST font dataset. Top of each image is from $\mathit{MNIST}_\mathit{font}$, bottom is the generated image in $\mathit{MNIST}_\mathit{GAN}$ }
+\label{fig:long}
+\label{fig:onecol}
+\end{figure}
+
+
+%<p>
 To validate whether the GAN was creating useful images we looked at the resulting images in MNIST<sub>GAN</sub>:
 
-<p>
-From visual inspection it became apparent that the GAN has trouble keeping the labels consistent if there is not enough real training data. An example of this are the 1 and the 2 of <code>r = 0.007</code> in <a href="#figure3">figure 3</a>: they both result in something that looks like the same 8 instead of something that looks like a 1 or 2 respectively. This means that the classifier trained on this new dataset will receive two very close samples with conflicting labels. We measured the accuracy on MNIST of C-MNIST<sub>GAN</sub> and found low accuracy for lower ratios. This supports the conclusion that there is an issue with labeling.
+%<p>
+From visual inspection it became apparent that the GAN has trouble keeping the labels consistent if there is not enough real training data. An example of this are the 1 and the 2 of $r = 0.007$ in figure 3: they both result in something that looks like the same 8 instead of something that looks like a 1 or 2 respectively. This means that the classifier trained on this new dataset will receive two very close samples with conflicting labels. We measured the accuracy on MNIST of $\mathit{C-MNIST}_\mathit{GAN}$ and found low accuracy for lower ratios. This supports the conclusion that there is an issue with labeling.
 
-<p>
-We measured the performance of C-MNIST<sub>original+GAN</sub> versus C-MNIST<sub>original</sub>. It showed that even though the generated samples are not good samples for their target class, C-MNIST<sub>original+GAN</sub> is much more accurate than C-MNIST<sub>original</sub>. This effect can partially be explained by results shown by Rolnick et al. that indicate that <a href="https://arxiv.org/pdf/1705.10694.pdf">deep learning is robust to massive label noise</a>. This would mean that the network is still capable of learning higher level features from the mislabeled samples and is able to succesfully ignore the bad labeling. This indicates that this technique is succesfully able to close the distribution gap once a lower bound on the amount of available real images has been reached.
+%<p>
+We measured the performance of $\mathit{C-MNIST}_\mathit{original+GAN}$ versus $\mathit{C-MNIST}_\mathit{original}$. It showed that even though the generated samples are not good samples for their target class, $\mathit{C-MNIST}_\mathit{original+GAN}$ is much more accurate than $\mathit{C-MNIST}_\mathit{original}$. This effect can partially be explained by results shown by Rolnick et al. that indicate that <a href="https://arxiv.org/pdf/1705.10694.pdf">deep learning is robust to massive label noise</a>. This would mean that the network is still capable of learning higher level features from the mislabeled samples and is able to succesfully ignore the bad labeling. This indicates that this technique is succesfully able to close the distribution gap once a lower bound on the amount of available real images has been reached.
+
+\iffalse
 
 <h3>C-MNIST<sub>font</sub> performance</h3>
 <div class="figure" id="figure4">

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -euo pipefail
+
+PATH=$PATH:/Applications/Inkscape.app/Contents/Resources/bin/ inkscape -z -D --export-latex  --file="$(pwd)/../method.svg" --export-pdf="$(pwd)/method_svg-tex.pdf"
+
+PATH=$PATH:~/Downloads/ImageMagick-7.0.7/bin DYLD_LIBRARY_PATH=~/Downloads/ImageMagick-7.0.7/lib montage -mode concatenate -tile 12x10 ../images/*.preview*.png example-font-images.png
+
+for ratio in 001 007 100 700; do
+	PATH=$PATH:~/Downloads/ImageMagick-7.0.7/bin DYLD_LIBRARY_PATH=~/Downloads/ImageMagick-7.0.7/lib montage -mode concatenate -tile 10x2 ../results/0.$ratio/0.$ratio-original-*.png ../results/0.$ratio/0.$ratio-converted-*.png results-$ratio.png
+done
+
+pdflatex -shell-escape research.tex
