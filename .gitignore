@@ -1,0 +1,9 @@
+mirror
+meeting*.html
+notes*.html
+footage
+environment.tar.gz
+.*.swp
+.*.swo
+*.mkv
+*.mp4
