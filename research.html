@@ -1,3 +1,20 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+\usepackage{cvpr}
+\usepackage{times}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage[breaklinks=true,bookmarks=false]{hyperref}
+
+\def\cvprPaperId{0}
+\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+
+\begin{document}
+
+\iffalse
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,11 +25,26 @@
 </head>
 <body>
 <h1>
+\fi
+\title{
 Exploiting synthetic images for real-world image recognition
+}
+\iffalse
+
 </h1>
 <p><a href="http://in.maxmaton.nl">Max Maton</a>, Jan van Gemert, Miriam Huijser, Osman Kayhan
 
 <h2>
+\fi
+\author{Max Maton\\
+Delft University of Technology\\
+Delft, The Netherlands
+{\tt\small info@maxmaton.nl}
+}
+
+\maketitle
+
+\iffalse
 Abstract
 </h2>
 <p>
@@ -393,3 +425,5 @@ We've shown that GANs can be used to inflate trainingsets by reducing the gap be
 
 </body>
 </html>
+\fi
+\end{document}
