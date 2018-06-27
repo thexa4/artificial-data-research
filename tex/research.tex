@@ -100,10 +100,7 @@ Related work
 Artificial data can sometimes be used to train networks, i.e. a network trained on rendered images to segment images of indoor scenes \cite{10.1.1.94.777}, a network that recognises font characters trained on interpolated real samples \cite{10.1.1.151.7688} and a network trained with simulations to train control networks. \cite{10.1109/CVPR.2016.442} These networks are trained by creating a synthetic dataset that is as close as possible in statistical distribution as the real dataset. Generally this is very difficult or expensive to achieve.
 
 %<p>
-A solution for the problem of creating synthetic datasets with a distribution close to a real dataset is domain adaptation. This is generally done using Generative Adversarial Networks \cite{1703.05192.pdf, 10.1109/CVPR.2017.18, 10.1007/978-3-319-58347-1} that are trained to create samples that are indistinguisable from images in the real dataset based on images in the crude synthetic dataset. We decided to perform this research on the GAN as described by Bousmalis et al \cite{10.1109/CVPR.2017.18} due to the available TensorFlow \cite{tensorflow} implementation.
-
-%<p>
-The problem of creating synthetic datasets with a distribution close to a real dataset can be solved by using domain adaptation. This is generally done using Generative Adversarial Networks \cite{1703.05192.pdf, 10.1109/CVPR.2017.18, 10.1007/978-3-319-58347-1} ttrained to create samples based on images in the crude synthetic dataset that are indistinguisable from images in the real dataset. We decided to perform this research on the GAN as described by Bousmalis et al \cite{10.1109/CVPR.2017.18} due to the available TensorFlow \cite{tensorflow} implementation.
+The problem of creating synthetic datasets with a distribution close to a real dataset can be solved by using domain adaptation. This is generally done using Generative Adversarial Networks \cite{1703.05192.pdf, 10.1109/CVPR.2017.18, 10.1007/978-3-319-58347-1} trained to create samples based on images in the crude synthetic dataset that are indistinguisable from images in the real dataset. We decided to perform this research on the GAN as described by Bousmalis et al \cite{10.1109/CVPR.2017.18} due to the available TensorFlow \cite{tensorflow} implementation.
 
 
 
@@ -208,7 +205,7 @@ Figure 4. <i>Performance of C-MNIST<sub>font</sub> with varying amounts of MNIST
 \fi
 
 \subsection{$\text{C-MNIST}_\text{font}$ performance}
-\begin{figure*}
+\begin{figure}
 \begin{center}
 \fbox{\rule{0pt}{2in} %\rule{.7\linewidth}{0pt} %
 	\includegraphics[width=0.8\linewidth]{../graph-font.png}
@@ -216,7 +213,7 @@ Figure 4. <i>Performance of C-MNIST<sub>font</sub> with varying amounts of MNIST
 \end{center}
    \caption{Performance of $\text{C-MNIST}_\text{font}$ with varying amounts of $\text{MNIST}_\text{font}$ training data. Performance decreases with more training samples indicating that $\text{MNIST}_\text{original}$ and $\text{MNIST}_\text{font}$ have different characteristics}
 \label{fig:graph-font}
-\end{figure*}
+\end{figure}
 
 To make sure we actually test whether the GAN is able to close the distribution gap we looked at the accuracy of $\text{C-MNIST}_\text{font}$. For this dataset the error shows an inverse relation between the amount of samples and the performance of the classifier as can be seen in figure \ref{fig:graph-font}. This indicates that a gap exists between the raw font dataset and the MNIST test dataset.
 
@@ -232,7 +229,7 @@ Figure 5. <i>Performance of classifiers with different amounts of MNIST training
 
 
 \subsection{Classifier performance}
-\begin{figure*}
+\begin{figure}
 \begin{center}
 \fbox{\rule{0pt}{2in} %\rule{.7\linewidth}{0pt} %
 	\includegraphics[width=0.8\linewidth]{../graph-results.png}
@@ -240,7 +237,7 @@ Figure 5. <i>Performance of classifiers with different amounts of MNIST training
 \end{center}
    \caption{Performance of classifiers with different amounts of MNIST training data. Training with the GAN data improves results after a minimal amount of original MNIST samples}
 \label{fig:graph-results}
-\end{figure*}
+\end{figure}
 
 %<p>
 We compared the accuracy of $\text{C-MNIST}_\text{font}$, $\text{C-MNIST}_\text{GAN}$, $\text{C-MNIST}_\text{original}$ and $\text{C-MNIST}_\text{original+GAN}$ to see whether training with the $\text{MINST}_\text{original+GAN}$ dataset is better than training with one of the individual datasets. The result of this comparison can be seen in figure \ref{fig:graph-results}.
@@ -261,7 +258,7 @@ Figure 6. <i>Performance of C-MNIST<sub>original+font</sub> versus the performan
 \fi
 
 \subsection{$\text{C-MNIST}_\text{original}$ against $\text{C-MNIST}_\text{original+font}$}
-\begin{figure*}
+\begin{figure}
 \begin{center}
 \fbox{\rule{0pt}{2in} %\rule{.7\linewidth}{0pt} %
 	\includegraphics[width=0.8\linewidth]{../graph-font-original-comparison.png}
@@ -269,7 +266,7 @@ Figure 6. <i>Performance of C-MNIST<sub>original+font</sub> versus the performan
 \end{center}
    \caption{Performance of $\text{C-MNIST}_\text{original+font}$ versus the performance of $\text{C-MNIST}_\text{original}$ for varying amounts of training data. Performance is almost the same indicating no advantage to including font data in the training set directly.}
 \label{fig:graph-font-original-comparison}
-\end{figure*}
+\end{figure}
 
 %<p>
 To confirm that the improved results of $\text{C-MNIST}_\text{original+GAN}$ can not be solely explained by the addition of more data, we compared $\text{C-MNIST}_\text{original}$ with $\text{C-MNIST}_\text{original+font}$ to see if the addition of font data increased the accuracy. From the results in figure \ref{fig:graph-font-original-comparison} we had to conclude that $\text{C-MNIST}_\text{original+font}$ has performance roughly equal to $\text{C-MNIST}_\text{original}$ and therefore cannot explain the additional accuracy of $\text{C-MNIST}_\text{original+gan}$.
