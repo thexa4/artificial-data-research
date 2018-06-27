@@ -3,4 +3,6 @@
 *.pdf_tex
 *.aux
 *.log
+*.bbl
+*.blg
 svg_inkscape
