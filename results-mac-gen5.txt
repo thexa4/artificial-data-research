@@ -1,4 +1,4 @@
-experiment; dataset; trainingset; accuracy; loss; n; stddev
+experiment; dataset; testset; accuracy; loss; n; stddev
 0,001; font; gan; 0,99594; 0,0647077472; 5; 0,0003361547262793952
 0,001; font; mnist+gan; 0,1011522144; 138,47054699999998; 5; 0,0018832927057633169
 0,001; font; mnist; 0,59284137; 51,1822924; 5; 0,006981901006316253

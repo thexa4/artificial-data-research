@@ -9,6 +9,7 @@
 \usepackage{svg}
 \usepackage{currfile}
 \usepackage{minibox}
+\usepackage{longtable}
 
 \usepackage[breaklinks=true,bookmarks=false]{hyperref}
 
@@ -52,8 +53,8 @@ Abstract
 \fi
 
 \begin{abstract}
-
-This paper shows that the gap between synthetic and real-world image distributions can be closed by using GANs to convert the synthetic data to a dataset which has the same distribution as the real data. Training this GAN requires only a fraction of the dataset traditionally required to get a high classification accuracy. This converted data can subsequently be used to train a classifier with a higher accuracy than a classifier trained only on the real dataset.
+Creating big datasets is often difficult or expensive which causes people to try to augment their dataset with rendered images. This often fails to significantly improve accuracy due to a difference in distribution between real and rendered datasets.
+This paper shows that the gap between synthetic and real-world image distributions can be closed by using a GAN to convert the synthetic data to a dataset which has the same distribution as the real data. Training this GAN requires only a fraction of the dataset traditionally required to get a high classification accuracy. This converted data can subsequently be used to train a classifier with a higher accuracy than a classifier trained only on the real dataset.
 
 \end{abstract}
 
@@ -96,10 +97,10 @@ The problem of creating rendered datasets with a distribution close to a real da
 {\scriptsize \includesvg[width=0.85\linewidth]{../GAN.svg}}
 \end{center}
    \caption{Overview of the GAN architecture}
-\label{fig:example-font-images}
+\label{fig:gan-architecture}
 \end{figure}
 
-The basis of this research is the GAN that converts images from a rendered dataset distribution to an image that appears to come from the distribution of a real dataset. This GAN consists of three parts. The first part is a generator network that does the image conversion. The second part of the GAN is a discriminator, which tries to distinguish between the output of the generator and images from the real dataset. The third part of the GAN is a classifier that predicts the label of images coming from either the real dataset, the generator or the rendered dataset. All these networks are trained in parallel. The discriminator and classifier are trained to reduce the amount of misclassifications. The generator is trained to minimise the amount of pixels changed in the image, to minimise the loss in classification by the classifier and to try to fool the discriminator to classify the image as real.
+The basis of this research is the GAN that converts images from a rendered dataset distribution to an image that appears to come from the distribution of a real dataset. This GAN consists of three parts which are shown in figure \ref{fig:gan-architecture}. The first part is a generator network that does the image conversion. The second part of the GAN is a discriminator, which tries to distinguish between the output of the generator and images from the real dataset. The third part of the GAN is a classifier that predicts the label of images coming from either the real dataset, the generator or the rendered dataset. All these networks are trained in parallel. The discriminator and classifier are trained to reduce the amount of misclassifications. The generator is trained to minimise the amount of pixels changed in the image, to minimise the loss in classification by the classifier and to try to fool the discriminator to classify the image as real.
 
 %<p>
 To test the effects of inflating datasets when using this technique, we first trained the GAN with a real and rendered dataset. We then apply the trained GAN on the rendered dataset to create a new synthetic dataset. A combined dataset consisting of the synthetic dataset and the real dataset was used to train a second classifier.
@@ -131,7 +132,7 @@ For multiple ratios\footnote{ Ratios used were: $0.001$, $0.003$, $0.005$, $0.00
 \end{description}
 
 %<p>
-We used these two datasets to train the GAN using 12 million training samples and subsequently applied the trained gan GAN on the $\text{MNIST}_\text{font}$ dataset to create the $\text{MNIST}_\text{GAN}$ dataset. This made the $\text{MNIST}_\text{GAN}$ dataset have the exact same size as $\text{MNIST}_\text{font}$.
+We used these two datasets to train the GAN using $375,000$ steps with batchsize $32$ and subsequently applied the trained gan GAN on the $\text{MNIST}_\text{font}$ dataset to create the $\text{MNIST}_\text{GAN}$ dataset. This made the $\text{MNIST}_\text{GAN}$ dataset have the exact same size as $\text{MNIST}_\text{font}$.
 
 %<p>
 
@@ -228,16 +229,15 @@ To confirm that the improved results of $\text{C-MNIST}_\text{original+GAN}$ can
 
 Due to a limited amount of time, no finetuning has been done on the other hyperparameters of the GAN. Optimizing these hyperparameters might further improve classification accuracy which should result in a further reduction in the amount of required samples from the real dataset.
 
-When measuring the performance of $\text{C-MNIST}_\text{original+GAN}$ versus $\text{C-MNIST}_\text{original}$ we found that even though the generated samples are not good samples for their target class, $\text{C-MNIST}_\text{original+GAN}$ is much more accurate than $\text{C-MNIST}_\text{original}$. This effect can partially be explained by results shown by Sukhbaatar et al. that indicate that deep learning is robust to massive label noise \cite{Sukhbaatar2014TrainingCN}. This would mean that the network is still capable of learning higher level features from the mislabeled samples and is able to succesfully ignore the bad labeling.
+When measuring the performance of $\text{C-MNIST}_\text{original+GAN}$ versus $\text{C-MNIST}_\text{original}$ we found that even though the generated samples are not good samples for their target class, $\text{C-MNIST}_\text{original+GAN}$ quickly becomes much more accurate than $\text{C-MNIST}_\text{original}$ before the samples look like useful samples. This effect can partially be explained by results shown by Sukhbaatar et al. that indicate that deep learning is robust to massive label noise \cite{Sukhbaatar2014TrainingCN}. This would mean that the network is still capable of learning higher level features from the mislabeled samples and is able to succesfully ignore the bad labeling.
 
 
 \section{Conclusion}
-
+Our goal was to use a GAN to close the distribution gap between rendered and real datasets. 
 
 Using MNIST as an example, we were able to show that it's possible to create a rendered dataset. We've shown that a distribution gap exists between the dataset we created and the real MNIST dataset and were able to close this gap using our described technique.
 
-%<p>
-We've shown that GANs can be used to inflate trainingsets by reducing the gap between synthetic and real datasets. Furthermore, they can do so with very little real training data.
+We've shown that GANs can be used to inflate trainingsets by reducing the gap between synthetic and real datasets. Furthermore, they can do so with very little real training data. This technique can be very useful for problems where only a small real dataset is avaiable.
 
 {\small
 \bibliographystyle{ieee}
@@ -248,7 +248,9 @@ We've shown that GANs can be used to inflate trainingsets by reducing the gap be
 \appendix
 
 \section{Raw experiment results}
-
-table
+\begin{longtable}{ | l | l | l | l | l | l | l | }
+	\hline
+	\input{results.tex}
+\end{longtable}
 
 \end{document}

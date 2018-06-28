@@ -12,5 +12,13 @@ done
 #	PATH=$PATH:~/Downloads/ImageMagick-7.0.7/bin DYLD_LIBRARY_PATH=~/Downloads/ImageMagick-7.0.7/lib montage -mode concatenate -tile 10x2 ../results/0.$ratio/0.$ratio-original-*.png ../results/0.$ratio/0.$ratio-converted-*.png results-$ratio.png
 #done
 
+< ../results-mac-gen5.txt tr ',' '.'| (read header
+echo 'Experiment & Dataset & Testset & Accuracy & Loss & n & Stddev \\ \hline'
+while IFS='; ' read experiment dataset testset accuracy loss n stddev; do
+	echo "$experiment & $dataset & $testset & $accuracy & $loss & $n & $stddev \\\\ \\hline"
+done
+
+) > results.tex
+
 bibtex research || true
 pdflatex -shell-escape research.tex
