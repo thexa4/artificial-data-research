@@ -30,11 +30,11 @@ Figure 1. <i>Technique used to convert synthetic dataset to be used in training.
 <p>
 Deep learning has revolutionised visual object recognition. Thanks to huge datasets and fast hardware (GPUs), current object recognition approaches have near-human accuracy.
 <p>
-Because creating big datasets is often very expensive, people are starting to turn to rendered images to augment their datasets. However, training networks on rendered images may not achieve the desired accuracy due to a <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.151.7688">gap between synthetic and real image distributions</a>.
+Because creating big datasets is often very expensive, start to turn to rendered images to augment their datasets. However, training networks on rendered images may not achieve the desired accuracy due to a <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.151.7688">gap between synthetic and real image distributions</a>.
 <p>
 Another development in current research is the increased focus on Generative Adversarial Networks (GANs) to generate images that <a href="https://arxiv.org/pdf/1406.2661.pdf">look similar to the images they were trained on</a>.
 <p>
-In this paper the impact of the distribution gap between synthetic and real image distributions is decreased by using a GAN to modify rendered images to have the same distribution as real images. This technique is shown to be useful for inflating very small datasets to a level where they can be used to create accurate classifiers.
+In this paper the impact of the distribution gap between synthetic and real image distributions is decreased by using a GAN to modify rendered images to have the same distribution as real images. This technique is shown to be useful for inflating very small datasets to a level where they can be used to create more accurate classifiers.
 
 <h2>
 Related work
@@ -51,10 +51,10 @@ Inflating datasets using synthetic data and GANs
 </h2>
 <div class="figure" id="figure-gan">
 <img src="GAN.svg" width="300em"><br>
-Figure _. <i>Overview of the GAN architecture</i>
+Figure _. <i>Overview of the GAN architecture.</i>
 </div>
 <p>
-The basis of this research is the GAN that converts images from a rendered dataset distribution to an image that appears to come from the distribution of a real dataset. This GAN consists of three parts which are shown in figure _. The first part is a generator network that does the image conversion. The second part of the GAN is a discriminator, which tries to distinguish between the output of the generator and images from the real dataset. The third part of the GAN is a classifier that predicts the label of images coming from either the real dataset, the generator or the rendered dataset. All these networks are trained in parallel. The discriminator and classifier are trained to reduce the amount of misclassifications. The generator is trained to minimise the amount of pixels changed in the image, to minimise the loss in classification by the classifier and to try to fool the discriminator to classify the image as real.
+The basis of this research is a GAN that converts images from a rendered dataset distribution to an image that appears to come from the distribution of a real dataset. This GAN consists of three parts which are shown in figure _. The first part is a generator network that does the image conversion. The second part of the GAN is a discriminator, which tries to distinguish between the output of the generator and images from the real dataset. The third part of the GAN is a classifier that predicts the label of images coming from either the real dataset, the generator or the rendered dataset. All these networks are trained in parallel. The discriminator and classifier are trained to reduce the amount of misclassifications. The generator is trained to minimise the amount of pixels changed in the image, to minimise the loss in classification by the classifier and to try to fool the discriminator to classify the image as real.
 
 <p>
 To test the effects of inflating datasets when using this technique, we first trained the GAN with a real and rendered dataset. We then apply the trained GAN on the rendered dataset to create a new synthetic dataset. A combined dataset consisting of the synthetic dataset and the real dataset was used to train a second classifier.
@@ -224,7 +224,7 @@ With these datasets we trained five instances of the following classifiers:
 </dl>
 
 <p>
-Each classifier was tested on the MNIST test set which resulted in an accuracy percentage.
+Each classifier was tested on the MNIST test set which resulted in an classification accuracy.
 
 <h2 id="results">
 Results
@@ -349,7 +349,7 @@ From visual inspection it is apparent that the GAN has trouble keeping the label
 Figure 4. <i>Performance of C-MNIST<sub>font</sub> with varying amounts of MNIST<sub>font</sub> training data. Performance decreases with more training samples indicating that MNIST<sub>original</sub> and MNIST<sub>font</sub> have different characteristics.</i>
 </div>
 <p>
-To make sure we actually test whether the GAN is able to close the distribution gap we looked at the accuracy of C-MNIST<sub>font</sub>. For this dataset the error shows an inverse relation between the amount of samples and the performance of the classifier as can be seen in <a href="#figure4">figure 4</a>. This indicates that a gap exists between the rendered font dataset and the MNIST test dataset.
+To make sure we actually test whether the GAN is able to close the distribution gap we looked at the accuracy of C-MNIST<sub>font</sub>. For this dataset the error shows an inverse relation between the amount of samples and the performance of the classifier, which can be seen in <a href="#figure4">figure 4</a>. This indicates that a gap exists between the rendered font dataset and the MNIST test dataset.
 
 <h3>
 C-MNIST<sub>original</sub> against C-MNIST<sub>original+GAN</sub>
@@ -360,10 +360,10 @@ Figure 5. <i>Performance of classifiers with different amounts of MNIST training
 </div>
 
 <p>
-We compared the accuracy of C-MNIST<sub>font</sub>, C-MNIST<sub>GAN</sub>, C-MNIST<sub>original</sub> and C-MNIST<sub>original+GAN</sub> to see whether training with the MINST<sub>original+GAN</sub> dataset is better than training with one of the individual datasets. The result of this comparison can be seen in <a href="#figure5">figure 5</a>.
+We compared the accuracy of C-MNIST<sub>font</sub>, C-MNIST<sub>GAN</sub>, C-MNIST<sub>original</sub> and C-MNIST<sub>original+GAN</sub> to see whether training with the MNIST<sub>original+GAN</sub> dataset is better than training with one of the individual datasets. The result of this comparison can be seen in <a href="#figure5">figure 5</a>.
 
 <p>
-There seems to be a minimum amount of real samples after which the GAN starts to produce meaningful data. In this case C-MNIST<sub>original+GAN</sub> is only more accurate than the C-MNIST<sub>original</sub> when the GAN  is trained on more than 385 real images (<code>r = 0.007</code>).
+C-MNIST<sub>original+GAN</sub> is only more accurate than the C-MNIST<sub>original</sub> when the GAN  is trained on more than 385 real images (<code>r = 0.007</code>). There seems to be a minimum amount of real samples after which the GAN starts to produce meaningful data. 
 
 <p>
 Using MNIST as a test case, this technique is able to close the distribution gap even with as little 0.7% real data in the resulting dataset.
@@ -373,7 +373,7 @@ Using MNIST as a test case, this technique is able to close the distribution gap
 Figure _. <i>Error of C-MNIST<sub>original+GAN</sub> compared to the error of C-MNIST<sub>original</sub>, lower is better. Lowest relative error was found at 5,500 MNIST samples.</i>
 </div>
 
-<p>We also compared the difference in wrong predictions between C-MNIST<sub>original</sub> and C-MNIST<sub>original+GAN</sub>. As is shown in figure _, the highest reduction in error was achieved with 5,500 MNIST images and 49,500 font images. This indicates that this technique becomes more effective when the ratio between real and rendered images becomes less extreme.
+<p>We also compared the difference in wrong predictions between C-MNIST<sub>original</sub> and C-MNIST<sub>original+GAN</sub>. As is shown in figure _, the highest reduction in error was achieved with 5,500 MNIST images and 49,500 font images. This indicates that for MNIST, this technique becomes more effective when the ratio between real and rendered images becomes less extreme.
 
 <h3>C-MNIST<sub>original</sub> against C-MNIST<sub>original+font</sub></h3>
 
@@ -383,7 +383,7 @@ Figure 6. <i>Performance of C-MNIST<sub>original+font</sub> versus the performan
 </div>
 
 <p>
-To confirm that the improved results of C-MNIST<sub>original+GAN</sub> can not be solely explained by the addition of more data, we compared C-MNIST<sub>original</sub> with C-MNIST<sub>original+font</sub> to see if the addition of font data increased the accuracy. From the results in <a href="#figure6">figure 6</a> we had to conclude that C-MNIST<sub>original+font</sub> has performance roughly equal to C-MNIST<sub>original</sub> at the ratios where C-MNIST<sub>original+GAN</sub> is more accurate. The addition of more data cannot explain the additional accuracy of C-MNIST<sub>original+gan</sub> indicating this increase is a property of the transformation made by the GAN.
+To confirm that the improved results of C-MNIST<sub>original+GAN</sub> can not be solely explained by the addition of the rendered font data, we compared C-MNIST<sub>original</sub> with C-MNIST<sub>original+font</sub> to see if the addition of font data increased the accuracy. From the results in <a href="#figure6">figure 6</a> we had to conclude that C-MNIST<sub>original+font</sub> has performance roughly equal to C-MNIST<sub>original</sub> at the ratios where C-MNIST<sub>original+GAN</sub> is more accurate. The addition of more font data cannot explain the additional accuracy of C-MNIST<sub>original+GAN</sub> indicating this increase is a property of the transformation made by the GAN.
 
 <h2>
 Discussion
