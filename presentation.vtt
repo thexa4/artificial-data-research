@@ -1,0 +1,338 @@
+﻿WEBVTT
+
+1
+00:00:01.300 --> 00:00:04.080
+Hi! Thank you all for being here today.
+
+2
+00:00:04.080 --> 00:00:12.800
+I'm going to tell something about my research I did on using synthetic data for machine learning.
+
+3
+00:00:12.800 --> 00:00:17.760
+I'm Max.
+
+4
+00:00:17.760 --> 00:00:20.260
+Well, what is machine learning?
+
+5
+00:00:20.260 --> 00:00:26.300
+Basically machine learning is art of creating black boxes called neural networks.
+
+6
+00:00:26.340 --> 00:00:33.060
+You feed your black box samples together with the desired labels and you let it train.
+
+7
+00:00:33.060 --> 00:00:41.580
+After the training is done, if you're lucky, your black box learns to give the right labels to samples it hasn't seen before.
+
+8
+00:00:41.580 --> 00:00:47.380
+Let's walk through the creation of a simple neural network called a classifier.
+
+9
+00:00:47.380 --> 00:00:49.840
+It all starts with collecting data.
+
+10
+00:00:49.840 --> 00:00:55.120
+Let's say we want to create a classifier to classify flowers.
+
+11
+00:00:55.120 --> 00:01:03.920
+We take some pictures of daisies and some pictures of dandelions, and let the classifier train on them.
+
+12
+00:01:03.920 --> 00:01:09.180
+We then an image we haven't shown it yet and ask it to predict what the label is.
+
+13
+00:01:09.180 --> 00:01:13.100
+For example we show it this dandelion and it tells us it's a daisy.
+
+14
+00:01:13.100 --> 00:01:15.720
+Unfortunately that often happens.
+
+15
+00:01:15.720 --> 00:01:24.060
+In this case it's because the background was green and we gave the classifier a lot of images with green backgrounds that were daisies.
+
+16
+00:01:24.060 --> 00:01:28.740
+The solution to this problem is to collect way more data.
+
+17
+00:01:28.740 --> 00:01:32.940
+There is one problem however, photographers are very expensive.
+
+18
+00:01:32.940 --> 00:01:40.560
+So what people are doing right now is using rendered data to augment their datasets.
+
+19
+00:01:40.560 --> 00:01:44.480
+An example of how we could do this for our flower classifier is:
+
+20
+00:01:44.480 --> 00:01:48.540
+we take an image on the left, the image we want to classify
+
+21
+00:01:48.540 --> 00:01:54.460
+we extract the flower and we paste the flower on top of a different image that didn't have a flower in it.
+
+22
+00:01:54.460 --> 00:02:01.600
+That way the classifier is forced to learn that certain backgrounds are irrelevant
+
+23
+00:02:01.600 --> 00:02:07.100
+If you look up close at the resulting image however you can see that there are a lot of artifacts.
+
+24
+00:02:07.100 --> 00:02:15.620
+In this case the cutout artifacts are the grey border and the lack of shadow in the flower.
+
+25
+00:02:15.620 --> 00:02:21.960
+In real life most rendered datasets have artifacts like that.
+
+26
+00:02:21.960 --> 00:02:28.600
+These differences are known as a distribution gap between real and rendered images.
+
+27
+00:02:28.600 --> 00:02:39.500
+Training of neural networks on rendered datasets often doesn't work as well as you expect due to these differences.
+
+28
+00:02:39.500 --> 00:02:52.380
+Research I've worked on is trying to train a neural network to remove these differences from images and train on the dataset that's then created.
+
+29
+00:02:52.380 --> 00:02:55.820
+We do this by using a neural network called a GAN.
+
+30
+00:02:55.820 --> 00:03:03.240
+I won't go in detail on how it works but basically what it does is: you train it on a rendered dataset and on a real dataset
+
+31
+00:03:03.240 --> 00:03:14.340
+and it learns to transform images from the rendered dataset to images that look real.
+
+32
+00:03:14.340 --> 00:03:25.480
+With the trained GAN we transform a rendered dataset into a new dataset that should look the same as the real dataset.
+
+33
+00:03:25.480 --> 00:03:30.780
+We then train our new classifier on the combined fixed and real dataset.
+
+34
+00:03:30.780 --> 00:03:37.100
+Our hope is then that the classifier we trained now is better than the one we had before.
+
+35
+00:03:42.200 --> 00:03:46.300
+In our research we didn't use flowers as those are relatively computationally intensive.
+
+36
+00:03:46.300 --> 00:03:50.460
+We used handwritten digits from the MNIST set.
+
+37
+00:03:50.460 --> 00:03:55.220
+On the left you see images in that set, those are the real samples.
+
+38
+00:03:55.220 --> 00:04:00.740
+They were taken from people doing tests in the US.
+
+39
+00:04:00.740 --> 00:04:03.040
+On the right you see our rendered dataset.
+
+40
+00:04:03.040 --> 00:04:11.980
+We use a slightly different approach for the rendering, we used fonts to create these images.
+
+41
+00:04:14.440 --> 00:04:18.900
+Here you can see how we created the dataset, we used open source fonts
+
+42
+00:04:18.900 --> 00:04:27.060
+and transformed them into the dataset there, the font dataset, which has images that look like the 42 on the top right.
+
+43
+00:04:29.620 --> 00:04:35.060
+Again we train the GAN on the font dataset and on the real dataset
+
+44
+00:04:35.060 --> 00:04:40.760
+to train it to convert font images into images that look like handwritten digits.
+
+45
+00:04:41.400 --> 00:04:48.560
+We then use the GAN to transform the font digits into things that look like handwritten digits.
+
+46
+00:04:49.800 --> 00:04:57.780
+And again we train the classifier on both the MNIST data and the GAN dataset.
+
+47
+00:04:58.860 --> 00:05:10.420
+We did this for multiple amounts of MNIST data, we tried to use less and less real data to see if we could still get an accurate result.
+
+48
+00:05:12.020 --> 00:05:17.680
+These were some of the outputs of the GAN if we used very little real training data.
+
+49
+00:05:17.680 --> 00:05:24.600
+About 55 images, that means 5,5 examples on average per digit.
+
+50
+00:05:24.600 --> 00:05:27.700
+As you can see it really doesn't work that well.
+
+51
+00:05:27.700 --> 00:05:29.580
+For a 1 it generates an 8.
+
+52
+00:05:29.580 --> 00:05:37.400
+For the 4, 5 and 7 they all generate the same 9.
+
+53
+00:05:37.400 --> 00:05:42.740
+When we increase the amount of images it doesn't become that much better.
+
+54
+00:05:42.740 --> 00:05:46.680
+It still looks like it's not doing much.
+
+55
+00:05:46.680 --> 00:05:55.240
+If we increase it further however we can see that the results start to look like they might have been written by someone.
+
+56
+00:05:57.580 --> 00:06:02.460
+Once we use a lot of images it becomes very realistic.
+
+57
+00:06:04.320 --> 00:06:11.200
+We mentioned a gap between real and rendered datasets so we had to verify that our dataset does have a gap.
+
+58
+00:06:11.200 --> 00:06:20.460
+To do that we plotted the error of a classifer trained on only the font data, when tested against MNIST.
+
+59
+00:06:21.940 --> 00:06:29.580
+As you can see if we increase the amount of font images we train the classifier with, the error goes up.
+
+60
+00:06:29.580 --> 00:06:34.060
+Which means that it becomes a worse classifier.
+
+61
+00:06:34.060 --> 00:06:41.860
+This indicates that there actually is a gap between the font dataset and the real dataset which is what we expected.
+
+62
+00:06:44.100 --> 00:06:48.640
+We also wanted to verify wether the GAN actually helped.
+
+63
+00:06:48.640 --> 00:06:56.740
+To do that we plotted the error of multiple classifiers trained on different amounts of MNIST samples.
+
+64
+00:06:56.740 --> 00:07:02.700
+You can see the same font data on the top but flipped horizontally.
+
+65
+00:07:02.700 --> 00:07:08.500
+This is because we use less font samples if we use more MNIST samples.
+
+66
+00:07:10.620 --> 00:07:18.860
+We then add the error of the classifier trained on only the real data.
+
+67
+00:07:18.860 --> 00:07:26.200
+This is our baseline, as you can see it goes to one percent error if we use the full dataset.
+
+68
+00:07:28.640 --> 00:07:34.300
+We also plotted the performance of a classifier only trained on GAN data.
+
+69
+00:07:34.300 --> 00:07:43.720
+As you can see it's always worse than just using the original data and only sometimes better than using the font data.
+
+70
+00:07:45.860 --> 00:07:56.780
+If we train a classifier on the original dataset and the GAN dataset however, it quickly becomes way better than the original dataset.
+
+71
+00:07:56.780 --> 00:08:01.100
+So combined they are better than the individual parts.
+
+72
+00:08:01.100 --> 00:08:05.460
+This starts happening from about 385 images.
+
+73
+00:08:10.380 --> 00:08:15.380
+All in all the GAN really seems to help in this case.
+
+74
+00:08:18.980 --> 00:08:30.480
+We only plotted one combined classifier previously, so we wanted to check wether the improved result wasn't due to adding more data.
+
+75
+00:08:30.480 --> 00:08:37.260
+To verify that, we also tested original+font versus original.
+
+76
+00:08:37.260 --> 00:08:44.680
+As you can see it does improve slightly but not nearly as dramatic as the data with the GAN combined.
+
+77
+00:08:50.900 --> 00:08:57.340
+We mentioned the original+GAN started to become better around 385 images.
+
+78
+00:08:57.340 --> 00:09:02.060
+However this was the result we showed for that amount of images.
+
+79
+00:09:02.060 --> 00:09:07.300
+It really doesn't look like it's working but somehow the accuracy still improves.
+
+80
+00:09:08.100 --> 00:09:12.680
+Due to time limits we haven't been able to figure out what exactly causes that.
+
+81
+00:09:16.660 --> 00:09:20.080
+All in all, this works great on MNIST.
+
+82
+00:09:20.080 --> 00:09:22.760
+Even with very little training data
+
+83
+00:09:22.760 --> 00:09:28.320
+GANs seem very useful for inflating small datasets and reducing costs.
+
+84
+00:09:28.320 --> 00:09:30.320
+Thank you.
+
